@@ -1,4 +1,4 @@
-# Window Detection in Facades Using Heatmaps Fusion
+# Fork of Window Detection in Facades Using Heatmaps Fusion
 Official implementation of our [paper](http://jcst.ict.ac.cn/EN/10.1007/s11390-020-0253-4).
 
 Chuan-Kang Li, Hong-Xin Zhang, Jia-Xin Liu, Yuan-Qing Zhang, Shan-Chen Zou, Yu-Tong Fang. Window Detection in Facades Using Heatmap Fusion[J].Journal of Computer Science and Technology, 2020, 35(4): 900-912.
