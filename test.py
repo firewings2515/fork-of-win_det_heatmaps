@@ -4,7 +4,7 @@ import time
 import torch
 import logging
 import pprint
-
+import numpy as np
 from torch.utils.data import DataLoader
 
 # define project dependency
@@ -88,7 +88,12 @@ def main():
                  devices, flip_pairs, flip_test=True)
     endt1 = time.time() - beginT
     logger.info('Valid Loss:%.4f' % vloss)
-
+    np.save('heatmaps.npy', heatmaps.cpu().numpy())
+    np.save('tagmaps.npy', tagmaps.cpu().numpy())
+    # print("-------------------heatmaps-------------------")
+    # print(heatmaps.cpu().numpy())
+    # print("-------------------tagmaps-------------------")
+    # print(tagmaps.cpu().numpy())
     beginT = time.time()
     evalNet(0, heatmaps, tagmaps, valid_data_loader, config.loss, config.test,
             config.train.patch_width, config.train.patch_height, output_path)

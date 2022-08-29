@@ -4,6 +4,9 @@ nohup.out
 .idea/
 debug/
 output
+TEST
+datasets
+annotation
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -134,3 +137,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+heatmaps.npy
+resnet18_model_latest.pth.tar
+tagmaps.npy
+zju_facade_jcst2020.rar

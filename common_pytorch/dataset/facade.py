@@ -5,7 +5,7 @@ import json
 import logging
 
 import numpy as np
-import pickle
+import pickle5 as pickle
 import xml.etree.ElementTree as et
 from collections import namedtuple
 from functools import cmp_to_key
@@ -141,7 +141,7 @@ class facade(IMDB):
         img_list = list()
         window_list = list()
         shape_list = list()
-
+        print(data_root_path)
         images_path_list = glob.glob(data_root_path + '/images/*.jpg')
         images_path_list += glob.glob(data_root_path + '/images/*.png')
         if not images_path_list:

@@ -1,4 +1,4 @@
-# Fork of Window Detection in Facades Using Heatmaps Fusion
+# Window Detection in Facades Using Heatmaps Fusion
 Official implementation of our [paper](http://jcst.ict.ac.cn/EN/10.1007/s11390-020-0253-4).
 
 Chuan-Kang Li, Hong-Xin Zhang, Jia-Xin Liu, Yuan-Qing Zhang, Shan-Chen Zou, Yu-Tong Fang. Window Detection in Facades Using Heatmap Fusion[J].Journal of Computer Science and Technology, 2020, 35(4): 900-912.
@@ -55,6 +55,9 @@ python test.py --cfg /path/to/yaml/config --model /path/to/model \
     --data /path/to/data/root \
     --out /path/to/output/root
 ```
+python test.py --cfg ./experiments/resnet/lr1e-3_x120-90-110_center_b2.yaml --model ./resnet18_model_latest.pth.tar \
+    --data ./TEST \
+    --out ./output
 
 
 **Inference**

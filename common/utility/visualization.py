@@ -77,8 +77,15 @@ def debug_vis(img, window_corner, label=None, raw_img=None, plotLine=True):
     cv2.imshow('patch', cv_img_patch_show)
     cv2.waitKey(0)
 
+def swap_pos(p1, p2):
+    tmp = p1
+    p1 = p2
+    p2 = tmp
+    return p1, p2
 
 def vis_eval_result(img, window, plotLine=False, saveFilename=None):
+    save_win = True
+
     if isinstance(img, str):
         if os.path.exists(img):
             cv_img_patch_show = cv2.imread(img)
@@ -86,9 +93,37 @@ def vis_eval_result(img, window, plotLine=False, saveFilename=None):
         cv_img_patch_show = img.copy()
     else:
         assert 0, "unKnown Type of img in debug_vis"
+    
+    win_path = ""
+    if saveFilename != None:
+        dirname = os.path.dirname(saveFilename)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+        win_path = os.path.join(dirname, "win_result")
+        if not os.path.exists(win_path):
+            os.makedirs(win_path)
+    
+    
 
     for idx in range(len(window)):
         lt, lb, rb, rt = window[idx]['position'][:4]
+        if lt[0] > rt[0]:
+            lt, rt = swap_pos(lt, rt)
+        if lt[1] < lb[1]:
+            lt, lb = swap_pos(lt, lb)
+        if rt[1] < rb[1]:
+            rt, rb = swap_pos(rt, rb)
+        if lb[0] > rb[0]:
+            lb, rb = swap_pos(lb, rb)
+
+        if save_win:
+            max_coord = np.maximum(np.maximum(rt, rb), np.maximum(lt, lb))
+            min_coord = np.minimum(np.minimum(lt, lb), np.minimum(rt, rb))
+
+            crop_img = cv_img_patch_show[int(min_coord[1]):int(max_coord[1]), int(min_coord[0]):int(max_coord[0])]
+            win_name = os.path.splitext(os.path.basename(saveFilename))[0] + "_" + str(idx) + ".jpg"
+            print(os.path.join(win_path, win_name), ":", min_coord, max_coord)
+            cv2.imwrite(os.path.join(win_path, win_name), crop_img)
 
         if plotLine:
             thickness = 3

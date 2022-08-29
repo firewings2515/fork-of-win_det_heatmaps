@@ -1,6 +1,7 @@
 # Functions for grouping tags
 from torch import nn
 import numpy as np
+import csv
 from munkres import Munkres
 
 from common_pytorch.common_loss.heatmap_label import get_coords_from_heatmaps_with_NMS
@@ -167,6 +168,12 @@ class HeatmapParser():
         print("Param detection_threshold", self.param.detection_threshold)
 
     def match(self, tag_k, loc_k, val_k):
+        # print("------------tag_k----------------")
+        # print(tag_k)
+        # print("------------loc_k----------------")
+        # print(loc_k)
+        # print("------------loc_k----------------")
+        # print(val_k)
         return match_by_tag([tag_k, loc_k, val_k], self.param)
 
     def calc(self, det, tag, idx=0):
@@ -204,7 +211,7 @@ class HeatmapParser():
         if tag.shape[0] == 8: # flip-test
             tag_k_flip = [tag[idx + 4, :, loc[:, 1], loc[:, 0]] for idx, loc in enumerate(indForExtractTag)]
             tag_k = [np.concatenate((tg, tg_fp), axis=1) for tg, tg_fp in zip(tag_k, tag_k_flip)]
-
+        
         return {'tag_k': tag_k, 'loc_k': ind_k, 'val_k': val_k}
 
     def rectify(self, windows):
@@ -248,6 +255,26 @@ class HeatmapParser():
 
         ans = ans[:, :, :3]
         ans[:, :, 0:2] *= ratio
+        filename = './output/test' + str(idx) + '.csv'
+        # print("--------------coords_in_patch_with_score_id----------------")
+        # print(np.shape(coords_in_patch_with_score_id))
+        # temp = []
+        # for i in range(len(coords_in_patch_with_score_id)):
+        #     temp.append([i, 0., 0., 0.])
+        #     for j in range(len(coords_in_patch_with_score_id[i])):
+        #         temp.append(coords_in_patch_with_score_id[i][j])
+        #print(temp)
+        #arr = np.array(temp)
+        # print(arr)
+        #filename = './output/test' + str(idx) + '.csv'
+        # np.savetxt(filename, arr, delimiter = ", ", fmt='% s')
+        temp = []
+        for i in range(len(ans)):
+            for j in range(len(ans[i])):
+                temp.append(ans[i][j])
+        
+        arr = np.array(temp)
+        np.savetxt(filename, arr, delimiter = ", ", fmt='% s')
 
         return ans
 
@@ -259,6 +286,7 @@ def group_corners_on_tags(idx, parser, dets, tags, patch_width, patch_height, im
     :param rectify:
     :return:
     '''
+
      # rescale ratio from patch size to image size
     ratio = max(im_width, im_height) / patch_height
     ratio = np.array([ratio, ratio])
